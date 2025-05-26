@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asesora de Moda 👗</title>
+  <style>
+    body {
+      background-color: #fce4ec;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      background: #fff0f5;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 420px;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background-color: #d81b60;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background-color: #fce4ec;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 75%;
+      margin: 5px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 15px;
+      line-height: 1.4;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #f8bbd0;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: #fce4ec;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #eee;
+      padding: 10px;
+      background-color: white;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      background-color: #d81b60;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      👠 Asesora de Moda
+    </div>
+    <div id="chat" class="chat-messages"></div>
+    <div class="chat-input">
+      <input type="text" id="inputUsuario" placeholder="Escribe tu mensaje...">
+      <button onclick="enviarMensaje()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('inputUsuario');
+
+    function obtenerAmbiente() {
+      const fecha = new Date();
+      const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      const dia = dias[fecha.getDay()];
+      const hoy = `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+      const temp = Math.floor(Math.random() * (32 - 18 + 1)) + 18;
+      return `📅 Hoy es ${dia}, ${hoy} y hace ${temp}°C. ¡Perfecto para renovar tu look! `;
+    }
+
+    function mostrarMensaje(texto, tipo) {
+      const mensaje = document.createElement('div');
+      mensaje.className = `message ${tipo}`;
+      mensaje.textContent = texto;
+      chat.appendChild(mensaje);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function responder(mensaje) {
+      mensaje = mensaje.toLowerCase();
+
+      const respuestas = {
+        "hola": "¡Hola hermosa! Bienvenida a nuestra boutique 💕",
+        "qué venden": "Tenemos blusas, vestidos, jeans, accesorios y calzado femenino 👗👠",
+        "horario": "Atendemos de lunes a sábado, de 9:00 am a 7:00 pm ⏰",
+        "hacen envíos": "Sí, realizamos envíos a todo el país 🚚",
+        "precios": "Nuestros productos van desde $10 hasta $50 💸",
+        "promociones": "¡Claro! Hoy tenemos 20% de descuento en vestidos de verano 🌞",
+        "quién te creó": "Fui diseñada por una estudiante creativa de TI 🎓",
+        "cómo estás": "Lista para asesorarte con estilo ✨ ¿Y tú?",
+        "ayuda": "Puedes preguntarme por productos, tallas, horarios o envíos 👛",
+        "gracias": "¡Con gusto! Espero verte luciendo fabulosa 💃",
+        "salir": "¡Hasta luego! Vuelve pronto por más moda 👋"
+      };
+
+      if (respuestas[mensaje]) {
+        mostrarMensaje(respuestas[mensaje], "bot");
+        if (mensaje === "salir") {
+          input.disabled = true;
+        }
+      } else {
+        mostrarMensaje("Lo siento, no entendí eso. ¿Puedes reformularlo, por favor? 😊", "bot");
+      }
+    }
+
+    function enviarMensaje() {
+      const texto = input.value.trim();
+      if (texto === "") return;
+      mostrarMensaje(texto, "user");
+      responder(texto);
+      input.value = "";
+    }
+
+    // Mensajes iniciales
+    mostrarMensaje("¡Bienvenida a Boutique Glamour! 👗✨", "bot");
+    mostrarMensaje(obtenerAmbiente(), "bot");
+    mostrarMensaje("Pregunta por productos, promociones o envíos. Escribe 'salir' para terminar.", "bot");
+  </script>
+
+</body>
+</html>
